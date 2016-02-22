@@ -38,8 +38,12 @@ RUN apt-get install -y librabbitmq-dev \
 #------------------------------------------------------------------------------
 ADD rootfs /
 
+# Download Browscap ini file
+RUN mkdir -p /usr/local/etc/php/extra/ \
+    && curl "http://browscap.org/stream?q=Full_PHP_BrowsCapINI" -o /usr/local/etc/php/extra/full_php_browscap.ini
+
 # Setup timezone to UTC
 RUN sed -i 's/^;\(date.timezone.*\)/\1 \"UTC\"/' /usr/local/etc/php/php.ini
 
-# Activate Browscap ini file
-RUN sed -i "s/;browscap =.*/browscap = extra\/lite_php_browscap\.ini/" /usr/local/etc/php/php.ini
+# Remove deprecated warning
+RUN sed -i 's/;always_populate_raw_post_data = -1/always_populate_raw_post_data = -1/' /usr/local/etc/php/php.ini
