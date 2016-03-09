@@ -27,6 +27,8 @@ RUN docker-php-ext-install gettext opcache mbstring mysqli bcmath opcache \
 
 #------------------------------------------------------------------------------
 # Populate root file system:
+# - php.ini
+# - Modules defaults configuration
 #------------------------------------------------------------------------------
 ADD rootfs /
 
