@@ -6,7 +6,7 @@ RUN apt-get update \
     && apt-get clean
 
 # Basic modules
-RUN docker-php-ext-install gettext opcache mbstring mysqli bcmath opcache \
+RUN docker-php-ext-install pcntl sockets bcmath mbstring opcache mysqli gettext \
 # Igbinary module
     && pecl install igbinary \
     && docker-php-ext-enable igbinary \
