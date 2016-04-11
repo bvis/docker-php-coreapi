@@ -38,3 +38,5 @@ RUN mkdir -p /var/log/sql/ && chmod 0777 /var/log/sql/
 # Download Browscap ini file
 RUN mkdir -p /usr/local/etc/php/extra/ \
     && curl "http://browscap.org/stream?q=Full_PHP_BrowsCapINI" -o /usr/local/etc/php/extra/full_php_browscap.ini
+# Allow apache mod_status access form internal networks, needed by the apache exporter
+    && sed -i 's/#Require ip 192.0.2.0\/24/Require ip 10.0.0.0\/8 172.16.0.0\/12 192.168.0.0\/16/' /etc/apache2/mods-enabled/status.conf
