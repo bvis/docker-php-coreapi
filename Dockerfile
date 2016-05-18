@@ -35,7 +35,7 @@ RUN apt-get update \
 ADD rootfs /
 
 # Add Softonic CA certificate
-RUN echo "softonic_ca.pem" /etc/ca-certificates.conf \
+RUN echo "softonic_ca.pem" > /etc/ca-certificates.conf \
     && update-ca-certificates \
 # Extra folder for storing SQL Errors. TODO: Change this to another log strategy.
     && mkdir -p /var/log/sql/ && chmod 0777 /var/log/sql/ \
