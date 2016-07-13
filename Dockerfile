@@ -2,6 +2,10 @@ FROM php:5.6-apache
 
 MAINTAINER Basilio Vera <basilio.vera@softonic.com>
 
+ENV APCU_VERSION 4.0.11
+ENV LIBMEMCACHED_VERSION 1.0.18-4
+ENV MEMCACHED_VERSION 2.2.0
+
 # ZLIB Module, required by many other modules, like memcached
 RUN apt-get update \
     && apt-get install -y zlib1g-dev \
@@ -12,13 +16,13 @@ RUN apt-get update \
     && pecl install igbinary \
     && docker-php-ext-enable igbinary \
 # APCu module
-    && pecl install apcu-4.0.11 \
+    && pecl install apcu-$APCU_VERSION \
     && docker-php-ext-enable apcu \
 # Memcached module with igbinary support. The package provided by PECL does not support it
-    && apt-get install -y libmemcached-dev=1.0.18-4 \
-    && pecl download memcached-2.2.0 \
-    && tar xzvf memcached-2.2.0.tgz \
-    && cd memcached-2.2.0 \
+    && apt-get install -y libmemcached-dev=$LIBMEMCACHED_VERSION \
+    && pecl download memcached-$MEMCACHED_VERSION \
+    && tar xzvf memcached-$MEMCACHED_VERSION.tgz \
+    && cd memcached-$MEMCACHED_VERSION \
     && phpize \
     && ./configure --enable-memcached-igbinary --disable-memcached-sasl \
     && make \
@@ -34,11 +38,8 @@ RUN apt-get update \
 #------------------------------------------------------------------------------
 ADD rootfs /
 
-# Add Softonic CA certificate
-RUN echo "softonic_ca.pem" >> /etc/ca-certificates.conf \
-    && update-ca-certificates \
 # Extra folder for storing SQL Errors. TODO: Change this to another log strategy.
-    && mkdir -p /var/log/sql/ && chmod 0777 /var/log/sql/ \
+RUN mkdir -p /var/log/sql/ && chmod 0777 /var/log/sql/ \
 # Download Browscap ini file
     && mkdir -p /usr/local/etc/php/extra/ \
     && curl "http://browscap.org/stream?q=Full_PHP_BrowsCapINI" -o /usr/local/etc/php/extra/full_php_browscap.ini \
