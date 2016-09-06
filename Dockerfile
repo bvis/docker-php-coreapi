@@ -51,5 +51,6 @@ RUN mkdir -p /var/log/sql/ && chmod 0777 /var/log/sql/ \
     && sed -i 's/#Require ip 192.0.2.0\/24/Require ip 10.0.0.0\/8 172.16.0.0\/12 192.168.0.0\/16/' /etc/apache2/mods-enabled/status.conf
 
 # Auto-health check to the root page
-HEALTHCHECK --interval=5s --timeout=2s \
-  CMD curl -f -A "Docker-HealthCheck/v.x (https://docs.docker.com/engine/reference/builder/#healthcheck)" http://localhost/ || exit 1
+# Removed until docker hub support HEALTHCHECK feature
+# HEALTHCHECK --interval=5s --timeout=2s \
+#  CMD curl -f -A "Docker-HealthCheck/v.x (https://docs.docker.com/engine/reference/builder/#healthcheck)" http://localhost/ || exit 1
