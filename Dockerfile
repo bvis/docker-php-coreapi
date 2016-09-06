@@ -40,6 +40,7 @@ ADD rootfs /
 
 # Add *.softonic.com certificate
 RUN echo "symantec.crt" >> /etc/ca-certificates.conf \
+    && echo "sftapi.com.crt" >> /etc/ca-certificates.conf \
     && update-ca-certificates
 
 # Extra folder for storing SQL Errors. TODO: Change this to another log strategy.
